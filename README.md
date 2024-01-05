@@ -6,9 +6,7 @@
 > This project can be used to manipulate a given audio file, supporting mp3 and WAV files.
 
  
-## Usage
-
-***
+## Usage:
 
 `./SoundLIB -flag [Optional input given the flag provided] input.mp3/wav output.mp3/wav`
 
