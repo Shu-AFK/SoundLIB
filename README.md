@@ -2,7 +2,6 @@
 # SoundLIB
 
 > This project can be used to manipulate a given audio file, supporting mp3 and WAV files.
-
  
 ## Usage:
 
@@ -17,6 +16,10 @@
 
 ## exit codes:  
 
-    1 Invalid flag specified
-    2 Invalid amount of flags
-    3 Incorrect specifications
+    -1 Issue copying string
+    1  Invalid flag specified
+    2  Invalid amount of flags
+    3  Incorrect specifications
+    4  Incorrect file format
+    5  Input and output file formats are not equal
+    6  Issue executing the respective funtion
