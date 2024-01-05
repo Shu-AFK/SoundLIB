@@ -1,26 +1,36 @@
 #ifndef SOUNDLIB_WAV_H
 #define SOUNDLIB_WAV_H
 
-typedef struct wav_header {
-    // RIFF Header
-    char riff_header[4]; // Contains "RIFF"
-    int wav_size; // Size of the wav portion of the file, which follows the first 8 bytes. File size - 8
-    char wave_header[4]; // Contains "WAVE"
+#include <stdint.h>
 
-    // Format Header
-    char fmt_header[4]; // Contains "fmt " (includes trailing space)
-    int fmt_chunk_size; // Should be 16 for PCM
-    short audio_format; // Should be 1 for PCM. 3 for IEEE Float
-    short num_channels;
-    int sample_rate;
-    int byte_rate; // Number of bytes per second. sample_rate * num_channels * Bytes Per Sample
-    short sample_alignment; // num_channels * Bytes Per Sample
-    short bit_depth; // Number of bits per sample
+// These data types are essentially aliases for C/C++ primitive data types.
+// Adapted from http://msdn.microsoft.com/en-us/library/cc230309.aspx.
+// See https://en.wikipedia.org/wiki/C_data_types#stdint.h for more on stdint.h.
 
-    // Data
-    char data_header[4]; // Contains "data"
-    int data_bytes; // Number of bytes in data. Number of samples * num_channels * sample byte size
-    // uint8_t bytes[]; // Remainder of wave file is bytes
-} wav_header;
+typedef uint8_t   BYTE;
+typedef uint16_t  WORD;
+typedef uint32_t  DWORD;
+
+// The WAVHEADER structure contains information about the type, size,
+// and layout of a file that contains audio samples.
+// Adapted from http://soundfile.sapp.org/doc/WaveFormat/.
+
+typedef struct
+{
+    BYTE   chunkID[4];
+    DWORD  chunkSize;
+    BYTE   format[4];
+    BYTE   subchunk1ID[4];
+    DWORD  subchunk1Size;
+    WORD   audioFormat;
+    WORD   numChannels;
+    DWORD  sampleRate;
+    DWORD  byteRate;
+    WORD   blockAlign;
+    WORD   bitsPerSample;
+    BYTE   subchunk2ID[4];
+    DWORD  subchunk2Size;
+} __attribute__((__packed__))
+        WAVHEADER;
 
 #endif //SOUNDLIB_WAV_H
