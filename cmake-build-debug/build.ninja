@@ -64,10 +64,9 @@ build CMakeFiles/SoundLIB.dir/main.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C
 #############################################
 # Link the executable SoundLIB.exe
 
-build SoundLIB.exe: C_EXECUTABLE_LINKER__SoundLIB_Debug CMakeFiles/SoundLIB.dir/main.c.obj
+build SoundLIB.exe: C_EXECUTABLE_LINKER__SoundLIB_Debug CMakeFiles/SoundLIB.dir/main.c.obj | C$:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll
   FLAGS = -g
-  LINK_LIBRARIES = -llibmpg123-0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  LINK_PATH = -LC:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll
+  LINK_LIBRARIES = C:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\SoundLIB.dir
   POST_BUILD = cd .
   PRE_LINK = cd .

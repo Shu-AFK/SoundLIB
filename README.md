@@ -23,3 +23,5 @@
     4  Incorrect file format
     5  Input and output file formats are not equal
     6  Issue executing the respective funtion
+    7  Can't open input file
+    8  Can't open output file
