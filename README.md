@@ -1,8 +1,6 @@
 
 # SoundLIB
 
-***
-
 > This project can be used to manipulate a given audio file, supporting mp3 and WAV files.
 
  
