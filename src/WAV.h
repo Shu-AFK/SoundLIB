@@ -2,6 +2,7 @@
 #define SOUNDLIB_WAV_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 // These data types are essentially aliases for C/C++ primitive data types.
 // Adapted from http://msdn.microsoft.com/en-us/library/cc230309.aspx.
@@ -32,5 +33,18 @@ typedef struct
     DWORD  subchunk2Size;
 } __attribute__((__packed__))
         WAVHEADER;
+
+WAVHEADER *load_header(FILE *input);
+int check_format_wave(WAVHEADER header);
+
+
+// Functions used for reverse WAV
+void reverse_bytes(BYTE *array, int size, int block_size);
+int get_block_size(WAVHEADER header);
+void swap(BYTE *first, BYTE *second, int size);
+
+int reverse_file_wave(FILE *input, FILE *output);
+int change_vol_wave(FILE *input, FILE *output, double vol);
+int change_speed_wave(FILE *input, FILE *output, double speed);
 
 #endif //SOUNDLIB_WAV_H
