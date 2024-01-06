@@ -49,26 +49,26 @@ cmake_ninja_workdir = C$:/Users/Floyd/CLionProjects/SoundLIB/cmake-build-debug/
 
 build cmake_object_order_depends_target_SoundLIB: phony || CMakeFiles/SoundLIB.dir
 
-build CMakeFiles/SoundLIB.dir/main.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/main.c || cmake_object_order_depends_target_SoundLIB
-  DEP_FILE = CMakeFiles\SoundLIB.dir\main.c.obj.d
+build CMakeFiles/SoundLIB.dir/src/main.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/src/main.c || cmake_object_order_depends_target_SoundLIB
+  DEP_FILE = CMakeFiles\SoundLIB.dir\src\main.c.obj.d
   FLAGS = -g -std=gnu2x -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64
   OBJECT_DIR = CMakeFiles\SoundLIB.dir
-  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir
+  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir\src
 
-build CMakeFiles/SoundLIB.dir/wav.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/wav.c || cmake_object_order_depends_target_SoundLIB
-  DEP_FILE = CMakeFiles\SoundLIB.dir\wav.c.obj.d
+build CMakeFiles/SoundLIB.dir/src/wav.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/src/wav.c || cmake_object_order_depends_target_SoundLIB
+  DEP_FILE = CMakeFiles\SoundLIB.dir\src\wav.c.obj.d
   FLAGS = -g -std=gnu2x -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64
   OBJECT_DIR = CMakeFiles\SoundLIB.dir
-  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir
+  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir\src
 
-build CMakeFiles/SoundLIB.dir/mp3.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/mp3.c || cmake_object_order_depends_target_SoundLIB
-  DEP_FILE = CMakeFiles\SoundLIB.dir\mp3.c.obj.d
+build CMakeFiles/SoundLIB.dir/src/mp3.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$:/Users/Floyd/CLionProjects/SoundLIB/src/mp3.c || cmake_object_order_depends_target_SoundLIB
+  DEP_FILE = CMakeFiles\SoundLIB.dir\src\mp3.c.obj.d
   FLAGS = -g -std=gnu2x -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64
   OBJECT_DIR = CMakeFiles\SoundLIB.dir
-  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir
+  OBJECT_FILE_DIR = CMakeFiles\SoundLIB.dir\src
 
 
 # =============================================================================
@@ -78,7 +78,7 @@ build CMakeFiles/SoundLIB.dir/mp3.c.obj: C_COMPILER__SoundLIB_unscanned_Debug C$
 #############################################
 # Link the executable SoundLIB.exe
 
-build SoundLIB.exe: C_EXECUTABLE_LINKER__SoundLIB_Debug CMakeFiles/SoundLIB.dir/main.c.obj CMakeFiles/SoundLIB.dir/wav.c.obj CMakeFiles/SoundLIB.dir/mp3.c.obj | C$:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll
+build SoundLIB.exe: C_EXECUTABLE_LINKER__SoundLIB_Debug CMakeFiles/SoundLIB.dir/src/main.c.obj CMakeFiles/SoundLIB.dir/src/wav.c.obj CMakeFiles/SoundLIB.dir/src/mp3.c.obj | C$:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll
   FLAGS = -g
   LINK_LIBRARIES = C:/Users/Floyd/Downloads/mpg123-1.32.3-x86-64/mpg123-1.32.3-x86-64/libmpg123-0.dll  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\SoundLIB.dir

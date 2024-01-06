@@ -1,5 +1,5 @@
 // TODO: Other functions besides reverse WAV
-// TODO: Check if there is an issue in importing the WAV header
+// TODO: Check why other wav file is not working(reverse)
 
 #include <stdio.h>
 #include <getopt.h>
@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
     }
 
     // Open input and output files
-    FILE *input = fopen(input_file_name, "r");
+    FILE *input = fopen(input_file_name, "rb");
     if(input == NULL)
     {
         fprintf(stderr, "Error in opening %s!\n", input_file_name);
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
         exit(7);
     }
 
-    FILE *output = fopen(output_file_name, "w");
+    FILE *output = fopen(output_file_name, "wb");
     if(output == NULL)
     {
         fprintf(stderr, "Error in opening %s!\n", output_file_name);

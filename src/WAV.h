@@ -37,11 +37,13 @@ typedef struct
 WAVHEADER *load_header(FILE *input);
 int check_format_wave(WAVHEADER header);
 
+int is_little_endian();
+DWORD convert_endian(DWORD value);
+
 
 // Functions used for reverse WAV
-void reverse_bytes(BYTE *array, int size, int block_size);
+void reverse_bytes(BYTE *array, DWORD size, int block_size);
 int get_block_size(WAVHEADER header);
-void swap(BYTE *first, BYTE *second, int size);
 
 int reverse_file_wave(FILE *input, FILE *output);
 int change_vol_wave(FILE *input, FILE *output, double vol);
