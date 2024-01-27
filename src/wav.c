@@ -14,19 +14,10 @@ WAVHEADER *load_header(FILE *input)
     WAVHEADER *header = malloc(sizeof(WAVHEADER));
 
     // Read the contents into the header object
-    fread(&header->chunkID, sizeof(BYTE), 4, input);
-    fread(&header->chunkSize, sizeof(DWORD), 1, input);
-    fread(&header->format, sizeof(BYTE), 4, input);
-    fread(&header->subchunk1ID, sizeof(BYTE), 4, input);
-    fread(&header->subchunk1Size, sizeof(DWORD), 1, input);
-    fread(&header->audioFormat, sizeof(WORD), 1, input);
-    fread(&header->numChannels, sizeof(WORD), 1, input);
-    fread(&header->sampleRate, sizeof(DWORD), 1, input);
-    fread(&header->byteRate, sizeof(DWORD), 1, input);
-    fread(&header->blockAlign, sizeof(WORD), 1, input);
-    fread(&header->bitsPerSample, sizeof(WORD), 1, input);
-    fread(&header->subchunk2ID, sizeof(BYTE), 4, input);
-    fread(&header->subchunk2Size, sizeof(DWORD), 1, input);
+    if(fread(&header, sizeof(header), 1, input))
+    {
+        exit(-1);
+    }
 
     return header;
 }
@@ -151,6 +142,49 @@ int reverse_file_wave(FILE *input, FILE *output)
 }
 
 int change_vol_wave(FILE *input, FILE *output, double vol)
+{
+    // Read the header and write it to the output file
+    WAVHEADER *header = load_header(input);
+    if(check_format_wave(*header) != 0)
+    {
+        perror("Input file is not a WAV file!\n");
+        free(header);
+        return 1;
+    }
+
+    if(fwrite(header, sizeof(WAVHEADER), 1, output) != 1)
+    {
+        perror("Could not write header to the output WAV file!\n");
+        free(header);
+        return 1;
+    }
+
+    // Read each sample and multiply it by the volume given
+    int block_size = get_block_size(*header);
+    BYTE buffer[block_size];
+
+    while(!feof(input) && fread(buffer, sizeof(BYTE), block_size, input) == block_size)
+    {
+        for(int i = 0; i < block_size; i++)
+            buffer[i] *= vol/block_size;
+
+        if(fwrite(buffer, sizeof(buffer), 1, output) != 1)
+        {
+            perror("Could not write to output!\n");
+            free(header);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int change_speed_wave(FILE *input, FILE *output, double speed)
+{
+    return 1;
+}
+
+int mix_wave(FILE *input, FILE *input2, FILE *output, float ratio)
 {
     return 1;
 }

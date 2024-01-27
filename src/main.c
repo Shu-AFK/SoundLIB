@@ -16,7 +16,7 @@ char *copy_string(const char *source);
 
 int main(int argc, char **argv) {
     // defines the allowed flags
-    char *flags = "hrvs";
+    char *flags = "hrvsm";
 
     // Gets the flag specified and makes sure its only one flag
     char flag = getopt(argc, argv, flags);
@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
     // Checks for correct usage
     char *input_file_name = nullptr;
     char *output_file_name = nullptr;
+    char *input_file_name2 = nullptr;
 
     switch (flag) {
         case 'h':
@@ -72,6 +73,11 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Incorrect use. Please refer to './SoundLIB -h' for more information!\n");
                 exit(3);
             }
+            if(atof(argv[2]) < 0)
+            {
+                perror("Optional input can't be < 0!\n");
+                exit(3);
+            }
 
             // Assign input and output file name their values while making sure it worked
             input_file_name = copy_string(argv[3]);
@@ -89,6 +95,42 @@ int main(int argc, char **argv) {
             }
 
             break;
+        case 'm':
+            if(argc != 6)
+            {
+                fprintf(stderr, "Incorrect use. Please refer to './SoundLIB -h' for more information!\n");
+                exit(3);
+            }
+            if(atof(argv[5]) > 1 || atof(argv[5]) < 5)
+            {
+                perror("The ratio has to be within [0 ; 1] \n");
+                exit(3);
+            }
+
+            // Assign input and output file name their values while making sure it worked
+            input_file_name = copy_string(argv[2]);
+            if(input_file_name == nullptr)
+            {
+                fprintf(stderr, "Could not copy %s into input_file_name!\n", argv[2]);
+                exit(-1);
+            }
+            input_file_name2 = copy_string(argv[3]);
+            if(input_file_name2 == nullptr)
+            {
+                fprintf(stderr, "Could not copy %s into input_file_name2!\n", argv[3]);
+                free(input_file_name);
+                exit(-1);
+            }
+            output_file_name = copy_string(argv[5]);
+            if(output_file_name == nullptr)
+            {
+                fprintf(stderr, "Could not copy %s into output_file_name!\n", argv[5]);
+                free(input_file_name);
+                free(input_file_name2);
+                exit(-1);
+            }
+
+            break;
 
         default:
             break;
@@ -96,7 +138,10 @@ int main(int argc, char **argv) {
 
     // Open the files and proceed, based on the format provided by the user
     int format_in = get_file_format(input_file_name); // 1 if WAV, 2 if mp3, 0 if invalid
+    int format_in2 = -1;
     int format_out = get_file_format(output_file_name); // 1 if WAV, 2 if mp3, 0 if invalid
+    if (flag == 'm')
+        format_in2 = get_file_format(input_file_name2);
 
     // Checks if the file formats are valid
     if(format_out == 0 || format_in == 0)
@@ -104,14 +149,38 @@ int main(int argc, char **argv) {
         fprintf(stderr, "File formats provided are not supported!\n");
         free(input_file_name);
         free(output_file_name);
+        if(format_in2 != -1)
+            free(input_file_name);
         exit(4);
     }
     if(format_in != format_out)
     {
-        fprintf(stderr, "The file format of the input file is not equal to the output file!\n");
+        fprintf(stderr, "The file formats are not equal!\n");
         free(input_file_name);
         free(output_file_name);
+        if(format_in2 != -1)
+            free(input_file_name);
         exit(5);
+    }
+
+    if(format_in2 != -1)
+    {
+        if(format_in2 == 0)
+        {
+            fprintf(stderr, "File formats provided are not supported!\n");
+            free(input_file_name);
+            free(output_file_name);
+            free(input_file_name);
+            exit(4);
+        }
+        if(format_in != format_in2)
+        {
+            fprintf(stderr, "The file formats are not equal!\n");
+            free(input_file_name);
+            free(output_file_name);
+            free(input_file_name);
+            exit(4);
+        }
     }
 
     // Open input and output files
@@ -121,6 +190,8 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Error in opening %s!\n", input_file_name);
         free(input_file_name);
         free(output_file_name);
+        if(format_in2 != -1)
+            free(input_file_name);
         exit(7);
     }
 
@@ -131,7 +202,25 @@ int main(int argc, char **argv) {
         fclose(input);
         free(input_file_name);
         free(output_file_name);
+        if(format_in2 != -1)
+            free(input_file_name);
         exit(8);
+    }
+
+    FILE *input2;
+    if(format_in2 != -1)
+    {
+        input2 = fopen(input_file_name2, "rb");
+        if(input2 == NULL)
+        {
+            fprintf(stderr, "Error in opening %s!\n", input_file_name2);
+            fclose(input);
+            fclose(output);
+            free(input_file_name);
+            free(output_file_name);
+            free(input_file_name);
+            exit(9);
+        }
     }
     
     // If the file format is WAVE proceed with the specified flag
@@ -158,6 +247,13 @@ int main(int argc, char **argv) {
                 if(change_speed_wave(input, output, atof(argv[2])) != 0)
                 {
                     fprintf(stderr, "Error in changing playback speed of wave file!\n");
+                    goto cleanup_error;
+                }
+                break;
+            case 'm':
+                if(mix_wave(input, input2, output, atof(argv[4])) != 0)
+                {
+                    perror("Error in mixing files together!\n");
                     goto cleanup_error;
                 }
                 break;
@@ -195,6 +291,14 @@ int main(int argc, char **argv) {
                 }
                 break;
 
+            case 'm':
+                if(mix_mp3(input, input2, output, atof(argv[4])) != 0)
+                {
+                    perror("Error in mixing files together!\n");
+                    goto cleanup_error;
+                }
+                break;
+
             default:
                 goto cleanup_error;
         }
@@ -211,6 +315,11 @@ cleanup_error:
     fclose(output);
     free(input_file_name);
     free(output_file_name);
+    if(format_in2 != -1)
+    {
+        fclose(input2);
+        free(input_file_name);
+    }
 
     exit(6);
 }
@@ -221,7 +330,9 @@ void print_help()
     printf("Flags: -h prints help\n"
            "    -r reverse\n"
            "    -v change volume by value specified after the flag\n"
-           "    -s change playback speed\n");
+           "    -s change playback speed"
+           "    -m mix two sound files together by a ratio specified\n"
+           "        ./SoundLIB -m input1.mp3/wav input2.mp3/wav [Ratio] output.mp3/wav");
 }
 
 int get_file_format(char *file)

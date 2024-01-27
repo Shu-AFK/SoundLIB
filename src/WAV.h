@@ -48,5 +48,6 @@ int get_block_size(WAVHEADER header);
 int reverse_file_wave(FILE *input, FILE *output);
 int change_vol_wave(FILE *input, FILE *output, double vol);
 int change_speed_wave(FILE *input, FILE *output, double speed);
+int mix_wave(FILE *input, FILE *input2, FILE *output, float ratio);
 
 #endif //SOUNDLIB_WAV_H
